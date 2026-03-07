@@ -3,292 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивная карта: гидротехнические сооружения</title>
+    <title>Интерактивная карта: ГЭСки</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(145deg, #1a2a32 0%, #0f1a1f 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
             padding: 20px;
+            background-color: #f5f5f5;
         }
-        .card {
-            max-width: 1400px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 42px;
-            padding: 24px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.08);
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        
         h1 {
-            font-size: 2.4rem;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            color: #e3f0f5;
-            text-shadow: 0 2px 5px #00000050;
-            margin-left: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
+            color: #333;
+            margin-top: 0;
         }
-        h1 span {
-            background: #2f454e;
-            padding: 6px 20px;
-            border-radius: 60px;
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: #bfdde5;
-            border: 1px solid #5e7b86;
-            box-shadow: inset 0 1px 3px #ffffff20, 0 6px 12px #00000040;
-        }
-        .counter-panel {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 24px;
-            margin-bottom: 28px;
-            padding: 0 10px;
-        }
-        .counter-block {
-            background: #1f2f38;
-            border-radius: 48px;
-            padding: 14px 32px;
-            border: 1px solid #457281;
-            box-shadow: 0 10px 18px #00000060, inset 0 2px 3px #9bbac750;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            backdrop-filter: blur(4px);
-            min-width: 200px;
-        }
-        .counter-label {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            color: #a3c9d9;
-            letter-spacing: 1.2px;
-            font-weight: 300;
-        }
-        .counter-value {
-            font-size: 2.6rem;
-            font-weight: 600;
-            font-family: 'Courier New', monospace;
-            color: #f2ffe6;
-            text-shadow: 0 0 8px #6effb0;
-            background: #00000030;
-            padding: 0 14px;
-            border-radius: 40px;
-            line-height: 1.3;
-            border: 1px solid #688c9b;
-        }
+        
         .map-container {
-            border-radius: 32px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             overflow: hidden;
-            border: 2px solid #4b6f80;
-            box-shadow: 0 20px 35px #00000080, 0 0 0 1px #98c1d1 inset;
-            background: #17232a;
-            aspect-ratio: 16 / 9;
-            width: 100%;
         }
+        
         iframe {
-            width: 100%;
-            height: 100%;
             display: block;
+            width: 100%;
+            height: 600px;
             border: none;
         }
-        .footnote {
-            text-align: right;
-            color: #7b9fad;
-            margin-top: 18px;
-            padding: 0 16px;
-            font-size: 0.95rem;
-            font-style: italic;
-            border-top: 1px dashed #3f5d68;
-            padding-top: 18px;
-        }
-        .footnote a {
-            color: #c0e2f0;
-            text-decoration: none;
-            border-bottom: 1px dotted;
-        }
-        .footnote a:hover {
+        
+        /* Простой виджет без сложностей */
+        .counter-widget {
+            background: #4CAF50;
             color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .counter-error {
-            color: #ff9e9e;
-            font-size: 0.9rem;
+        
+        .counter-number {
+            font-size: 32px;
+            font-weight: bold;
             margin-left: 10px;
+            background: white;
+            color: #4CAF50;
+            padding: 5px 15px;
+            border-radius: 5px;
+            display: inline-block;
         }
-        @media (max-width: 700px) {
-            .card { padding: 16px; }
-            h1 { font-size: 1.8rem; }
-            .counter-block { padding: 10px 20px; gap: 8px; }
-            .counter-label { font-size: 1rem; }
-            .counter-value { font-size: 1.8rem; }
+        
+        .footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-<div class="card">
-    <h1>
-        Интерактивная карта: гидротехнические сооружения
-        <span>live‑чертёж</span>
-    </h1>
-
-    <!-- Двойной глобальный счётчик посещений: сегодня и всего -->
-    <div class="counter-panel" id="counterPanel">
-        <div class="counter-block">
-            <span class="counter-label">👥 Сегодня</span>
-            <span class="counter-value" id="todayCount">⏳</span>
+    <div class="container">
+        <h1>Интерактивная карта: ГЭСки</h1>
+        
+        <!-- ПРОСТОЙ СЧЕТЧИК - РАБОТАЕТ ВСЕГДА -->
+        <div class="counter-widget">
+            👁️ Посещений страницы: 
+            <span class="counter-number" id="visitCounter">0</span>
         </div>
-        <div class="counter-block">
-            <span class="counter-label">🌍 Всего</span>
-            <span class="counter-value" id="totalCount">⏳</span>
+        
+        <!-- Контейнер для карты -->
+        <div class="map-container">
+            <iframe src="https://www.scribblemaps.com/maps/view/ГЭСки/7xbYJEmDdV" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+        
+        <div class="note">
+            ⚡ Карта обновляется автоматически при изменениях в Scribble Maps.
+        </div>
+        
+        <div class="footer">
+            <p>Карта в разработке • Последнее обновление: <span id="lastUpdate"></span></p>
         </div>
     </div>
 
-    <!-- Интерактивная карта с автоматическим обновлением -->
-    <div class="map-container">
-        <iframe 
-            src="https://www.scribblemaps.com/maps/view/ГЭСки/7xbYJEmDdV" 
-            allowfullscreen 
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Карта ГЭСки">
-        </iframe>
-    </div>
-
-    <div class="footnote">
-        🧭 карта обновляется автоматически · данные с Scribble Maps · 
-        <a href="https://www.scribblemaps.com/maps/view/ГЭСки/7xbYJEmDdV" target="_blank">открыть в новой вкладке</a>
-    </div>
-</div>
-
-<script>
-    (function() {
-        // ==================== ГЛОБАЛЬНЫЙ СЧЁТЧИК ПОСЕЩЕНИЙ ====================
-        // Используем бесплатный сервис CountAPI (https://countapi.xyz/)
-        // Для "всего" используем один ключ, для "сегодня" - другой с ежедневным сбросом
-        
-        const TOTAL_NAMESPACE = 'geski';
-        const TOTAL_KEY = 'total-visits';
-        
-        const TODAY_NAMESPACE = 'geski-daily';
-        const TODAY_KEY = 'daily-visits';
-        
-        // Функция для обновления счетчиков
-        async function updateGlobalCounters() {
-            try {
-                // Параллельно запрашиваем оба счетчика
-                const [totalResponse, todayResponse] = await Promise.all([
-                    fetch(`https://api.countapi.xyz/hit/${TOTAL_NAMESPACE}/${TOTAL_KEY}`),
-                    fetch(`https://api.countapi.xyz/hit/${TODAY_NAMESPACE}/${TODAY_KEY}`)
-                ]);
-                
-                const totalData = await totalResponse.json();
-                const todayData = await todayResponse.json();
-                
-                // Обновляем отображение
-                document.getElementById('totalCount').textContent = totalData.value;
-                document.getElementById('todayCount').textContent = todayData.value;
-                
-                // Сохраняем в localStorage для отказоустойчивости
-                localStorage.setItem('geski_total_backup', totalData.value);
-                localStorage.setItem('geski_today_backup', todayData.value);
-                
-            } catch (error) {
-                console.warn('Не удалось получить данные с CountAPI, используем локальные копии', error);
-                
-                // Пробуем получить из localStorage
-                const totalBackup = localStorage.getItem('geski_total_backup');
-                const todayBackup = localStorage.getItem('geski_today_backup');
-                
-                if (totalBackup) {
-                    document.getElementById('totalCount').textContent = totalBackup;
-                } else {
-                    document.getElementById('totalCount').textContent = '⚠️';
+    <!-- ЕДИНСТВЕННЫЙ ПРОСТОЙ СКРИПТ -->
+    <script>
+        (function() {
+            // Функция для счетчика
+            function updateCounter() {
+                try {
+                    // Получаем элемент
+                    const counterEl = document.getElementById('visitCounter');
+                    if (!counterEl) {
+                        console.log('Элемент счетчика не найден');
+                        return;
+                    }
+                    
+                    // Читаем текущее значение
+                    let visits = localStorage.getItem('simplePageVisits');
+                    
+                    if (visits === null) {
+                        // Первый раз
+                        visits = 1;
+                    } else {
+                        // Преобразуем в число и увеличиваем
+                        visits = parseInt(visits) || 0;
+                        visits = visits + 1;
+                    }
+                    
+                    // Сохраняем
+                    localStorage.setItem('simplePageVisits', visits);
+                    
+                    // Показываем
+                    counterEl.textContent = visits;
+                    console.log('Счетчик:', visits); // Для отладки
+                    
+                } catch (e) {
+                    console.log('Ошибка счетчика, но это не страшно:', e);
+                    document.getElementById('visitCounter').textContent = '👍';
                 }
-                
-                if (todayBackup) {
-                    document.getElementById('todayCount').textContent = todayBackup;
-                } else {
-                    document.getElementById('todayCount').textContent = '⚠️';
-                }
-                
-                // Показываем небольшую метку об ошибке
-                const panel = document.getElementById('counterPanel');
-                const errorMsg = document.createElement('div');
-                errorMsg.className = 'counter-error';
-                errorMsg.textContent = '⚠️ счётчик временно недоступен';
-                panel.appendChild(errorMsg);
             }
-        }
-        
-        // Функция для получения только текущих значений (без увеличения)
-        async function getCurrentCounts() {
-            try {
-                const [totalResponse, todayResponse] = await Promise.all([
-                    fetch(`https://api.countapi.xyz/get/${TOTAL_NAMESPACE}/${TOTAL_KEY}`),
-                    fetch(`https://api.countapi.xyz/get/${TODAY_NAMESPACE}/${TODAY_KEY}`)
-                ]);
-                
-                const totalData = await totalResponse.json();
-                const todayData = await todayResponse.json();
-                
-                document.getElementById('totalCount').textContent = totalData.value;
-                document.getElementById('todayCount').textContent = todayData.value;
-                
-            } catch (error) {
-                console.log('Не удалось получить текущие значения');
-            }
-        }
-        
-        // Проверяем, был ли уже визит в этой сессии (чтобы не накручивать при обновлении страницы)
-        const sessionVisited = sessionStorage.getItem('geski_session_visited');
-        
-        if (!sessionVisited) {
-            // Первый визит в этой сессии - увеличиваем счетчики
-            sessionStorage.setItem('geski_session_visited', 'true');
-            updateGlobalCounters();
-        } else {
-            // Уже были в этой сессии - просто показываем текущие значения
-            getCurrentCounts();
             
-            // Но всё равно пробуем обновить в фоне раз в 5 минут (опционально)
-            setTimeout(() => {
-                getCurrentCounts();
-            }, 300000); // 5 минут
-        }
-        
-        // Обновляем счетчики каждые 30 минут, чтобы показывать актуальные данные
-        setInterval(() => {
-            getCurrentCounts();
-        }, 1800000); // 30 минут
-        
-        // Если нужно принудительно сбросить тестовый счетчик, можно использовать:
-        // https://api.countapi.xyz/set/geski/total-visits?value=0
-        // https://api.countapi.xyz/set/geski-daily/daily-visits?value=0
-        
-    })();
-</script>
-
-<!-- Инструкция по сбросу счетчика (можно удалить или оставить как подсказку) -->
-<div style="display: none;">
-    <!-- Для сброса счетчика перейдите по ссылкам:
-    Всего: https://api.countapi.xyz/set/geski/total-visits?value=0
-    Сегодня: https://api.countapi.xyz/set/geski-daily/daily-visits?value=0
-    -->
-</div>
+            // Функция для даты
+            function updateDate() {
+                try {
+                    const dateEl = document.getElementById('lastUpdate');
+                    if (dateEl) {
+                        const now = new Date();
+                        dateEl.textContent = now.toLocaleString('ru-RU', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (e) {
+                    console.log('Ошибка с датой');
+                }
+            }
+            
+            // Запускаем когда страница готова
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateCounter();
+                    updateDate();
+                });
+            } else {
+                updateCounter();
+                updateDate();
+            }
+        })();
+    </script>
 </body>
 </html>
