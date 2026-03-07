@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивная карта: гидротехнические сооружения</title>
+    <title>Интерактивная карта: ГЭСки</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,7 +40,6 @@
             border: none;
         }
         
-        /* Стили для счетчика */
         .counter-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -64,7 +63,6 @@
             padding: 8px 15px;
             border-radius: 8px;
             display: inline-block;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .footer {
@@ -83,24 +81,18 @@
             padding: 10px 15px;
             border-radius: 4px;
             margin: 20px 0;
-            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🗺️ Интерактивная карта: гидротехнические сооружения</h1>
+        <h1>🗺️ Интерактивная карта: ГЭСки</h1>
         
-        <!-- ГЛОБАЛЬНЫЙ СЧЕТЧИК HITS - РАБОТАЕТ НА ВСЕХ ПОЛЬЗОВАТЕЛЕЙ -->
+        <!-- Виджет с информацией о счетчике -->
         <div class="counter-section">
-            <span class="counter-text">👥 Посещений страницы:</span>
+            <span class="counter-text">👥 Статистика посещений:</span>
             <div class="counter-badge">
-                <!-- Счетчик от hits.seeyoufarm.com - показывает сегодня / всего -->
-                <a href="https://hits.seeyoufarm.com" target="_blank">
-                    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://Anika1611-hydro.github.io/geski-map/&count_bg=%234CAF50&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=сегодня+%2F+всего&edge_flat=false"
-                         alt="счетчик посещений"
-                         style="border-radius: 6px;" />
-                </a>
+                <span style="color: #333; font-weight: bold;">данные LiveInternet ↓</span>
             </div>
         </div>
         
@@ -113,12 +105,25 @@
         
         <div class="note">
             ⚡ <strong>Карта обновляется автоматически</strong> — все изменения в Scribble Maps сразу появляются здесь.<br>
-            🔄 <strong>Счетчик глобальный</strong> — показывает сколько человек посетило страницу сегодня и всего.
+            📊 <strong>Счетчик LiveInternet</strong> — показывает посещаемость за сегодня и всё время.
         </div>
         
         <div class="footer">
-            <p>© Карта в разработке • Дата публикации: 2026</p>
+            <p>© Карта в разработке • Статистика: LiveInternet</p>
         </div>
     </div>
+
+    <!--LiveInternet counter--><a href="https://www.liveinternet.ru/click"
+target="_blank"><img id="licntA113" width="88" height="120" style="border:0" 
+title="LiveInternet: показано количество просмотров и посетителей"
+src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+alt=""/></a><script>(function(d,s){d.getElementById("licntA113").src=
+"https://counter.yadro.ru/hit?t28.9;r"+escape(d.referrer)+
+((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+(s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+";h"+escape(d.title.substring(0,150))+";"+Math.random()})
+(document,screen)</script><!--/LiveInternet-->
+
+    
 </body>
 </html>
