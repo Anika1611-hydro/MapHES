@@ -176,110 +176,72 @@
 </div>
 
 <script>
+    // Простой и надежный счетчик посещений на localStorage
     (function() {
-        // ==================== ГЛОБАЛЬНЫЙ СЧЁТЧИК ПОСЕЩЕНИЙ ====================
-        // Используем бесплатный сервис CountAPI (https://countapi.xyz/)
-        // Для "всего" используем один ключ, для "сегодня" - другой с ежедневным сбросом
-        
-        const TOTAL_NAMESPACE = 'geski';
-        const TOTAL_KEY = 'total-visits';
-        
-        const TODAY_NAMESPACE = 'geski-daily';
-        const TODAY_KEY = 'daily-visits';
-        
-        // Функция для обновления счетчиков
-        async function updateGlobalCounters() {
+        // Функция для обновления счетчика
+        function updateCounter() {
+            const counterElement = document.getElementById('visitCounter');
+            if (!counterElement) return; // Если элемент не найден, выходим
+
             try {
-                // Параллельно запрашиваем оба счетчика
-                const [totalResponse, todayResponse] = await Promise.all([
-                    fetch(`https://api.countapi.xyz/hit/${TOTAL_NAMESPACE}/${TOTAL_KEY}`),
-                    fetch(`https://api.countapi.xyz/hit/${TODAY_NAMESPACE}/${TODAY_KEY}`)
-                ]);
-                
-                const totalData = await totalResponse.json();
-                const todayData = await todayResponse.json();
-                
-                // Обновляем отображение
-                document.getElementById('totalCount').textContent = totalData.value;
-                document.getElementById('todayCount').textContent = todayData.value;
-                
-                // Сохраняем в localStorage для отказоустойчивости
-                localStorage.setItem('geski_total_backup', totalData.value);
-                localStorage.setItem('geski_today_backup', todayData.value);
-                
-            } catch (error) {
-                console.warn('Не удалось получить данные с CountAPI, используем локальные копии', error);
-                
-                // Пробуем получить из localStorage
-                const totalBackup = localStorage.getItem('geski_total_backup');
-                const todayBackup = localStorage.getItem('geski_today_backup');
-                
-                if (totalBackup) {
-                    document.getElementById('totalCount').textContent = totalBackup;
+                // Пытаемся получить текущее значение счетчика
+                let visits = localStorage.getItem('pageVisits');
+
+                if (visits === null) {
+                    // Первое посещение
+                    visits = 1;
                 } else {
-                    document.getElementById('totalCount').textContent = '⚠️';
+                    // Увеличиваем счетчик
+                    visits = parseInt(visits) + 1;
+                    // Проверка на NaN (на всякий случай)
+                    if (isNaN(visits)) {
+                        visits = 1;
+                    }
                 }
-                
-                if (todayBackup) {
-                    document.getElementById('todayCount').textContent = todayBackup;
-                } else {
-                    document.getElementById('todayCount').textContent = '⚠️';
-                }
-                
-                // Показываем небольшую метку об ошибке
-                const panel = document.getElementById('counterPanel');
-                const errorMsg = document.createElement('div');
-                errorMsg.className = 'counter-error';
-                errorMsg.textContent = '⚠️ счётчик временно недоступен';
-                panel.appendChild(errorMsg);
+
+                // Сохраняем новое значение
+                localStorage.setItem('pageVisits', visits);
+                // Показываем значение на странице
+                counterElement.textContent = visits;
+                console.log('Счетчик обновлен:', visits); // Для отладки
+            } catch (e) {
+                // Если localStorage недоступен (например, в режиме инкогнито)
+                console.error('Ошибка счетчика:', e);
+                counterElement.textContent = '—';
             }
         }
-        
-        // Функция для получения только текущих значений (без увеличения)
-        async function getCurrentCounts() {
+
+        // Функция для обновления даты
+        function updateLastVisitDate() {
+            const dateElement = document.getElementById('lastUpdate');
+            if (!dateElement) return;
+
             try {
-                const [totalResponse, todayResponse] = await Promise.all([
-                    fetch(`https://api.countapi.xyz/get/${TOTAL_NAMESPACE}/${TOTAL_KEY}`),
-                    fetch(`https://api.countapi.xyz/get/${TODAY_NAMESPACE}/${TODAY_KEY}`)
-                ]);
-                
-                const totalData = await totalResponse.json();
-                const todayData = await todayResponse.json();
-                
-                document.getElementById('totalCount').textContent = totalData.value;
-                document.getElementById('todayCount').textContent = todayData.value;
-                
-            } catch (error) {
-                console.log('Не удалось получить текущие значения');
+                const now = new Date();
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                dateElement.textContent = now.toLocaleString('ru-RU', options);
+            } catch (e) {
+                dateElement.textContent = new Date().toString();
             }
         }
-        
-        // Проверяем, был ли уже визит в этой сессии (чтобы не накручивать при обновлении страницы)
-        const sessionVisited = sessionStorage.getItem('geski_session_visited');
-        
-        if (!sessionVisited) {
-            // Первый визит в этой сессии - увеличиваем счетчики
-            sessionStorage.setItem('geski_session_visited', 'true');
-            updateGlobalCounters();
+
+        // Запускаем всё после полной загрузки страницы
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                updateCounter();
+                updateLastVisitDate();
+            });
         } else {
-            // Уже были в этой сессии - просто показываем текущие значения
-            getCurrentCounts();
-            
-            // Но всё равно пробуем обновить в фоне раз в 5 минут (опционально)
-            setTimeout(() => {
-                getCurrentCounts();
-            }, 300000); // 5 минут
+            // Если DOM уже загружен
+            updateCounter();
+            updateLastVisitDate();
         }
-        
-        // Обновляем счетчики каждые 30 минут, чтобы показывать актуальные данные
-        setInterval(() => {
-            getCurrentCounts();
-        }, 1800000); // 30 минут
-        
-        // Если нужно принудительно сбросить тестовый счетчик, можно использовать:
-        // https://api.countapi.xyz/set/geski/total-visits?value=0
-        // https://api.countapi.xyz/set/geski-daily/daily-visits?value=0
-        
     })();
 </script>
 
@@ -291,4 +253,5 @@
     -->
 </div>
 </body>
+
 </html>
