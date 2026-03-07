@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактивная карта: ГЭСки</title>
+    <title>Интерактивная карта: гидротехнические сооружения</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,27 +40,31 @@
             border: none;
         }
         
-        /* Простой виджет без сложностей */
-        .counter-widget {
-            background: #4CAF50;
+        /* Стили для счетчика */
+        .counter-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 25px;
+            padding: 20px;
             border-radius: 8px;
-            display: inline-block;
             margin-bottom: 20px;
-            font-size: 18px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
-        .counter-number {
-            font-size: 32px;
-            font-weight: bold;
-            margin-left: 10px;
+        .counter-text {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        
+        .counter-badge {
             background: white;
-            color: #4CAF50;
-            padding: 5px 15px;
-            border-radius: 5px;
+            padding: 8px 15px;
+            border-radius: 8px;
             display: inline-block;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .footer {
@@ -69,26 +73,35 @@
             border-top: 1px solid #eee;
             color: #666;
             font-size: 14px;
+            text-align: center;
         }
         
         .note {
-            background-color: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+            color: #0d47a1;
             padding: 10px 15px;
             border-radius: 4px;
             margin: 20px 0;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Интерактивная карта: ГЭСки</h1>
+        <h1>🗺️ Интерактивная карта: гидротехнические сооружения</h1>
         
-        <!-- ПРОСТОЙ СЧЕТЧИК - РАБОТАЕТ ВСЕГДА -->
-        <div class="counter-widget">
-            👁️ Посещений страницы: 
-            <span class="counter-number" id="visitCounter">0</span>
+        <!-- ГЛОБАЛЬНЫЙ СЧЕТЧИК HITS - РАБОТАЕТ НА ВСЕХ ПОЛЬЗОВАТЕЛЕЙ -->
+        <div class="counter-section">
+            <span class="counter-text">👥 Посещений страницы:</span>
+            <div class="counter-badge">
+                <!-- Счетчик от hits.seeyoufarm.com - показывает сегодня / всего -->
+                <a href="https://hits.seeyoufarm.com" target="_blank">
+                    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://Anika1611-hydro.github.io/geski-map/&count_bg=%234CAF50&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=сегодня+%2F+всего&edge_flat=false"
+                         alt="счетчик посещений"
+                         style="border-radius: 6px;" />
+                </a>
+            </div>
         </div>
         
         <!-- Контейнер для карты -->
@@ -99,82 +112,13 @@
         </div>
         
         <div class="note">
-            ⚡ Карта обновляется автоматически при изменениях в Scribble Maps.
+            ⚡ <strong>Карта обновляется автоматически</strong> — все изменения в Scribble Maps сразу появляются здесь.<br>
+            🔄 <strong>Счетчик глобальный</strong> — показывает сколько человек посетило страницу сегодня и всего.
         </div>
         
         <div class="footer">
-            <p>Карта в разработке • Последнее обновление: <span id="lastUpdate"></span></p>
+            <p>© Карта в разработке • Дата публикации: 2026</p>
         </div>
     </div>
-
-    <!-- ЕДИНСТВЕННЫЙ ПРОСТОЙ СКРИПТ -->
-    <script>
-        (function() {
-            // Функция для счетчика
-            function updateCounter() {
-                try {
-                    // Получаем элемент
-                    const counterEl = document.getElementById('visitCounter');
-                    if (!counterEl) {
-                        console.log('Элемент счетчика не найден');
-                        return;
-                    }
-                    
-                    // Читаем текущее значение
-                    let visits = localStorage.getItem('simplePageVisits');
-                    
-                    if (visits === null) {
-                        // Первый раз
-                        visits = 1;
-                    } else {
-                        // Преобразуем в число и увеличиваем
-                        visits = parseInt(visits) || 0;
-                        visits = visits + 1;
-                    }
-                    
-                    // Сохраняем
-                    localStorage.setItem('simplePageVisits', visits);
-                    
-                    // Показываем
-                    counterEl.textContent = visits;
-                    console.log('Счетчик:', visits); // Для отладки
-                    
-                } catch (e) {
-                    console.log('Ошибка счетчика, но это не страшно:', e);
-                    document.getElementById('visitCounter').textContent = '👍';
-                }
-            }
-            
-            // Функция для даты
-            function updateDate() {
-                try {
-                    const dateEl = document.getElementById('lastUpdate');
-                    if (dateEl) {
-                        const now = new Date();
-                        dateEl.textContent = now.toLocaleString('ru-RU', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    }
-                } catch (e) {
-                    console.log('Ошибка с датой');
-                }
-            }
-            
-            // Запускаем когда страница готова
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() {
-                    updateCounter();
-                    updateDate();
-                });
-            } else {
-                updateCounter();
-                updateDate();
-            }
-        })();
-    </script>
 </body>
 </html>
